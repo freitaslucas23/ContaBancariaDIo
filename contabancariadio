@@ -1,0 +1,72 @@
+import java.util.Scanner;
+
+public class ContaBancaria {
+    private String nomeTitular;
+    private int numeroConta;
+    private double saldo;
+
+    public ContaBancaria(String nomeTitular, int numeroConta, double saldo) {
+        this.nomeTitular = nomeTitular;
+        this.numeroConta = numeroConta;
+        this.saldo = saldo;
+    }
+
+    public void depositar(double valor) {
+        saldo += valor;
+    }
+
+    public void sacar(double valor) {
+        if (valor > saldo) {
+            System.out.println("Saldo insuficiente. Saque não realizado.");
+        } else {
+            saldo -= valor;
+        }
+    }
+
+    public void exibirInformacoes() {
+        System.out.println("Conta Poupanca:");
+        System.out.println(nomeTitular);
+        System.out.println(numeroConta);
+        System.out.println("Saldo: R$ " + saldo);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("");
+        String nomeTitular = scanner.nextLine();
+
+        System.out.println("");
+        int numeroConta = scanner.nextInt();
+
+        System.out.println("");
+        double saldoInicial = scanner.nextDouble();
+
+        ContaBancaria conta = new ContaBancaria(nomeTitular, numeroConta, saldoInicial);
+
+        System.out.println("");
+        double taxaJuros = scanner.nextDouble();
+
+        ContaPoupanca contaPoupanca = new ContaPoupanca(nomeTitular, numeroConta, saldoInicial, taxaJuros);
+
+        contaPoupanca.exibirInformacoes();
+
+        // Fechar o scanner para evitar vazamentos de recursos
+        scanner.close();
+    }
+}
+
+class ContaPoupanca extends ContaBancaria {
+    private double taxaJuros;
+
+    public ContaPoupanca(String nomeTitular, int numeroConta, double saldo, double taxaJuros) {
+        super(nomeTitular, numeroConta, saldo);
+        this.taxaJuros = taxaJuros;
+    }
+
+    @Override
+    public void exibirInformacoes() {
+        super.exibirInformacoes();
+        System.out.println("Taxa de juros: " + taxaJuros + "%");
+    }
+}
